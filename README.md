@@ -41,6 +41,6 @@ To get a local copy up and running, follow these simple steps:
    - Select your target platform and click "Build".
 
 ## Contact
-Your Name - [mail@divyansh.org](mailto:mail@divyansh.org)
+Divyansh kumar - [mail@divyansh.org](mailto:mail@divyansh.org)
 
 Project Link: [https://github.com/divyansh-kumar/COSC_2200_GAME](https://github.com/divyansh-kumar/COSC_2200_GAME)
