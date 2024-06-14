@@ -3,7 +3,7 @@
 This game is built using Unity and C# with player and AI-controlled cars racing.
 
 ## Table of Contents
-- [Introduction](#introduction)
+- [Introdduction](#introduction)
 - [Features](#features)
 - [Installation](#installation)
 - [Usage](#usage)
