@@ -6,75 +6,99 @@ using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-
 public class PauseMenu : MonoBehaviour
 {
+    // Boolean flags to track the state of the game and menu screens
     public static bool GameIsPaused = false;
     public static bool optionscreen = false;
+    public static bool GameFinsished = false;
+
+    // References to UI elements for the pause menu, options screen, and finish screen
     public GameObject pauseMenuUI;
     public GameObject OptionsScene;
-    public static bool GameFinsished = false;
     public GameObject FinishScene;
+
+    // Reference to the text that displays the winner and time on the finish screen
     [SerializeField] TextMeshProUGUI screentext;
 
+    // Slider for adjusting the master volume and reference to the audio mixer
     [SerializeField] Slider MasterVolume;
     [SerializeField] private AudioMixer myMixer;
+
+    // Variables to store the winner's name and their finishing time
     public static string winner;
     public static string wintime;
 
-
-    void Start(){
+    // Initialize the master volume slider at the start
+    void Start()
+    {
         MasterVolume.value = GetMasterLevel();
-     }
+    }
 
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape)){
-            if(GameIsPaused){
-                if(optionscreen){
-                    back();
-                }else{
-                    Resume();
+        // Check if the Escape key is pressed to toggle pause/resume or options
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (GameIsPaused)
+            {
+                if (optionscreen)
+                {
+                    back();  // Return from options to the pause menu
                 }
-            }else{
-                Pause();
+                else
+                {
+                    Resume();  // Resume the game from pause
+                }
+            }
+            else
+            {
+                Pause();  // Pause the game
             }
         }
 
+        // If the game has finished, show the finish screen and display the results
         if (GameFinsished)
         {
-            //Time.timeScale = 0f;
             FinishScene.SetActive(true);
-            screentext.text = winner + "\n" + wintime;
-
+            screentext.text = winner + "\n" + wintime;  // Display the winner's name and time
         }
     }
 
-    public void Resume(){
+    // Resume the game, hiding the pause menu and unfreezing the game
+    public void Resume()
+    {
         pauseMenuUI.SetActive(false);
-        Time.timeScale = 1f;
+        Time.timeScale = 1f;  // Resume the game's time progression
         GameIsPaused = false;
     }
 
-    void Pause(){
+    // Pause the game, showing the pause menu and freezing the game
+    void Pause()
+    {
         pauseMenuUI.SetActive(true);
-        Time.timeScale = 0f;
+        Time.timeScale = 0f;  // Freeze the game's time progression
         GameIsPaused = true;
     }
 
-    public void loadOptions(){
+    // Load the options screen and hide the pause menu
+    public void loadOptions()
+    {
         OptionsScene.SetActive(true);
         pauseMenuUI.SetActive(false);
         optionscreen = true;
     }
 
-    public void back(){
+    // Return from the options screen to the pause menu
+    public void back()
+    {
         OptionsScene.SetActive(false);
         pauseMenuUI.SetActive(true);
         optionscreen = false;
     }
 
+    // Mark the game as finished and store the winner's name and finishing time
     public static void gameFinished(string text, string time)
     {
         GameFinsished = true;
@@ -82,16 +106,19 @@ public class PauseMenu : MonoBehaviour
         wintime = time;
     }
 
-    public void Quit(){
+    // Quit the game and load the main menu scene
+    public void Quit()
+    {
         SceneManager.LoadSceneAsync("Main Menu");
     }
-    public float GetMasterLevel(){
-		float value;
-		bool result =  myMixer.GetFloat("music", out value);
-		if(result){
-			return value;
-		}else{
-			return 0f;
-		}
-	}
+
+    // Get the current master volume level from the audio mixer
+    public float GetMasterLevel()
+    {
+        float value;
+        bool result = myMixer.GetFloat("music", out value);
+
+        // Return the volume level if successful, otherwise return 0
+        return result ? value : 0f;
+    }
 }
